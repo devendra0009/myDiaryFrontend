@@ -1,49 +1,45 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-const Signup = ({showAlert}) => {
+const Signup = ({ showAlert }) => {
+
+  const host = process.env.REACT_APP_BACKEND_URI;
   const [credentials, setCredentials] = useState({
-    name: "",
-    email: "",
-    password: "",
-    cpassword: "",
+    name: '',
+    email: '',
+    password: '',
+    cpassword: '',
   });
   let history = useNavigate();
 
   const handleSubmit = async (e) => {
-    // console.log(e,e.target,e.target[3],e.target[3].value);
+    // //  console.log(e,e.target,e.target[3],e.target[3].value);
     e.preventDefault();
     const { name, email, password } = credentials;
 
-
-    if(password===e.target[3].value)
-    {
-      const response = await fetch("http://localhost:5000/api/auth/createuser", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ name, email, password }),
-      });
-        const token = await response.json();
-        console.log(token);
-        if(token.success)
-          {
-            localStorage.setItem('token', token.authToken); 
-            history("/");
-            showAlert("success","SuccessFully Created Your Account!")
-          }
-          else
-          {
-            showAlert("success","Enter Valid Credentials")
-          }
+    if (password === e.target[3].value) {
+      const response = await fetch(
+          `${host}/api/auth/createuser`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ name, email, password }),
+        }
+      );
+      const token = await response.json();
+      //  console.log(token);
+      if (token.success) {
+        localStorage.setItem('token', token.authToken);
+        history('/');
+        showAlert('success', 'SuccessFully Created Your Account!');
+      } else {
+        showAlert('success', 'Enter Valid Credentials');
+      }
+    } else {
+      alert('Enter correct PassWord');
     }
-    else
-    {
-      alert('Enter correct PassWord')
-    }
-    
-
   };
 
   const onChange = (e) => {
@@ -85,7 +81,8 @@ const Signup = ({showAlert}) => {
             name="password"
             onChange={onChange}
             placeholder="Password"
-            minLength={5} required
+            minLength={5}
+            required
           />
         </div>
         <div className="form-group my-2">

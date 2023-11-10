@@ -1,36 +1,34 @@
-import React, { useState } from "react";
-import { useNavigate } from 'react-router-dom'
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-const Login = ({showAlert}) => {
-  const [credentials,setCredentials] = useState({ email: "", password: "" });
+const Login = ({ showAlert }) => {
+  const [credentials, setCredentials] = useState({ email: '', password: '' });
   let history = useNavigate();
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const response = await fetch('http://localhost:5000/api/auth/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        email: credentials.email,
+        password: credentials.password,
+      }),
+    });
+    const token = await response.json();
+    //  console.log(token);
 
-  const handleSubmit= async(e)=>{
-    e.preventDefault()
-    const response = await fetch("http://localhost:5000/api/auth/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email:credentials.email, password:credentials.password }),
-      });
-      const token = await response.json(); 
-      console.log(token);
-
-      if(token.success)
-      { 
-        //saving token in localStorage so that it can be used to authenticate users and their notes
-        localStorage.setItem('token', token.authToken); 
-        showAlert("success","SuccessFully Signed In!")
-        history("/");
-      }
-      else
-      {
-        showAlert("danger","Please Enter Valid Credentials!")
-      }
-
-  }
+    if (token.success) {
+      //saving token in localStorage so that it can be used to authenticate users and their notes
+      localStorage.setItem('token', token.authToken);
+      showAlert('success', 'SuccessFully Signed In!');
+      history('/');
+    } else {
+      showAlert('danger', 'Please Enter Valid Credentials!');
+    }
+  };
 
   const onChange = (e) => {
     setCredentials({ ...credentials, [e.target.name]: e.target.value });
@@ -68,7 +66,7 @@ const Login = ({showAlert}) => {
           />
         </div>
 
-        <button type="submit" className="btn btn-primary" >
+        <button type="submit" className="btn btn-primary">
           Submit
         </button>
       </form>

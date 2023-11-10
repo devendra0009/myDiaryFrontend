@@ -19,7 +19,7 @@ const NoteStates = (props) => {
       },
     });
     const user = await response.json(); //yha json me mjhe new notes vala array milra hoga by fetch all notes request
-    console.log(user);
+    //  console.log(user);
     setUserDetails(user);
   };
 
@@ -34,13 +34,13 @@ const NoteStates = (props) => {
       },
     });
     const note = await response.json(); //yha json me mjhe new notes vala array milra hoga by fetch all notes request
-    // console.log(note);
+    // //  console.log(note);
     setNotes(note);
   };
 
   //Add a note
   const addNote = async (title, description, tag) => {
-    console.log('adding a note');
+    //  console.log('adding a note');
 
     //Api Call
     const response = await fetch(`${host}/api/notes/addnote`, {
@@ -54,13 +54,13 @@ const NoteStates = (props) => {
     });
 
     const note = await response.json();
-    // console.log(notes);
+    // //  console.log(notes);
     setNotes(notes.concat(note));
   };
 
   //Delete a note
   const deleteNote = async (id) => {
-    console.log('deleting...' + id);
+    //  console.log('deleting...' + id);
 
     //Api Call
     const response = await fetch(`${host}/api/notes/delete/${id}`, {
@@ -72,7 +72,7 @@ const NoteStates = (props) => {
     });
 
     await response.json();
-    // console.log(json);
+    // //  console.log(json);
 
     //use filter method to remove the note with the id passed
     const newNotes = notes.filter((note) => note._id !== id); //so filter method pure notes array ko traverse krega or jin-jin note ki id not equal hai id given k un-unko ek array me dalkr vo array return krdega or hm us array ko setNotes me daldege
@@ -92,7 +92,7 @@ const NoteStates = (props) => {
     });
 
     await response.json();
-    // console.log(json);
+    // //  console.log(json);
 
     let newNotes = JSON.parse(JSON.stringify(notes)); //make a deep copy of notes object
     //updation
