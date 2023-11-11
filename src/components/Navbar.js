@@ -1,50 +1,107 @@
-import React from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import React from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
+import img from '../assets/logo.png';
 
 const Navbar = () => {
-  let location=useLocation()
-  let history=useNavigate()
-  const handleLogout=()=>{
-    localStorage.removeItem('token')
-    history('/login')
-  }
-  
+  let location = useLocation();
+  let history = useNavigate();
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    history('/login');
+  };
+
   return (
-    <div>
-      <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div className="container-fluid">
-          <Link className="navbar-brand" to="/">
-            Navbar
+    <Container>
+      <Nav>
+        <Links>
+          <Link to="/">
+            <img src={img} alt="logo.png" />
           </Link>
-          <button
-            className="navbar-toggler"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-          >
-            <span className="navbar-toggler-icon"></span>
-          </button>
-          <div className="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-              <li>
-                <Link className={`nav-link ${location.pathname==='/'?"active":""}`} aria-current="page" to="/">Home</Link>
-              </li>
-              <li>
-                <Link  className={`nav-link ${location.pathname==='/about'?"active":""}`} to="/about">About</Link>
-              </li>
-            </ul>
-            {!localStorage.getItem('token')?<form className="d-flex" role="search">
-            <Link to="/login" className="btn btn-primary mx-2" role="button" aria-pressed="true">Login</Link>
-            <Link to="/signup" className="btn btn-primary mx-2" role="button" aria-pressed="true">Sign-Up</Link>
-            </form>:<button className="btn btn-primary mx-2" onClick={handleLogout}>LogOut</button>}
-          </div>
-        </div>
-      </nav>
-    </div>
+          <Link to="/" className="link">
+            Home
+          </Link>
+          {localStorage.getItem('token') &&
+          <Link to="/about" className="link">
+            About
+          </Link>}
+        </Links>
+        <>
+          {!localStorage.getItem('token') ? (
+            <Buttons>
+              <Link to="/login" className="link bttn">
+                LogIn
+              </Link>
+              <Link to="/signup" className="link bttn">
+                SignUp
+              </Link>
+            </Buttons>
+          ) : (
+            <LogoutButton onClick={handleLogout}>LogOut</LogoutButton>
+          )}
+        </>
+      </Nav>
+    </Container>
   );
 };
+
+const Container = styled.div`
+  background-color: gray;
+  padding: 0.5rem 0;
+`;
+const Nav = styled.nav`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 80vw;
+  margin: 0 auto;
+`;
+const Links = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  .link {
+    text-decoration: none;
+    color: black;
+    font-size: 20px;
+    font-weight: bold;
+  }
+  .link:hover {
+    color: lightblue;
+  }
+`;
+const Buttons = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  .bttn {
+    text-decoration: none;
+    color: black;
+    font-size: 16px;
+    font-weight: bold;
+    background-color: lightblue;
+    padding: 5px 8px;
+    border-radius: 8px;
+  }
+  .bttn:hover{
+    background-color: lightskyblue;
+    
+  }
+  `;
+const LogoutButton = styled.div`
+text-decoration: none;
+color: black;
+font-size: 16px;
+font-weight: bold;
+background-color: lightblue;
+padding: 5px 8px;
+border-radius: 8px;
+cursor: pointer;
+
+&:hover {
+  background-color: lightskyblue;
+}
+`
+
 
 export default Navbar;

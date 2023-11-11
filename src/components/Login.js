@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
 
 const Login = ({ showAlert }) => {
   const [credentials, setCredentials] = useState({ email: '', password: '' });
@@ -35,43 +36,93 @@ const Login = ({ showAlert }) => {
   };
 
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label htmlFor="exampleInputEmail1">Email address</label>
-          <input
-            type="email"
-            className="form-control"
-            name="email"
-            value={credentials.email}
-            onChange={onChange}
-            id="email"
-            aria-describedby="emailHelp"
-            placeholder="Enter email"
-          />
-          <small id="emailHelp" className="form-text text-muted">
-            We'll never share your email with anyone else.
-          </small>
-        </div>
-        <div className="form-group">
-          <label htmlFor="exampleInputPassword1">Password</label>
-          <input
-            type="password"
-            className="form-control"
-            name="password"
-            value={credentials.password}
-            onChange={onChange}
-            id="password"
-            placeholder="Password"
-          />
-        </div>
-
-        <button type="submit" className="btn btn-primary">
-          Submit
-        </button>
-      </form>
-    </div>
+    <Container>
+      <Main>
+        <h2 className="heading">Login</h2>
+        <Form onSubmit={handleSubmit}>
+          <FormInput>
+            <label htmlFor="email" className="form-label">
+              Email address
+            </label>
+            <Input
+              type="email"
+              id="email"
+              name="email"
+              value={credentials.email}
+              onChange={onChange}
+            />
+          </FormInput>
+          <FormInput>
+            <label htmlFor="password" className="form-label">
+              Password
+            </label>
+            <Input
+              type="password"
+              id="password"
+              name="password"
+              value={credentials.password}
+              onChange={onChange}
+            />
+          </FormInput>
+          <Button type="submit">Submit</Button>
+        </Form>
+      </Main>
+    </Container>
   );
 };
+
+const Container = styled.div`
+  background-color: whitesmoke;
+  .heading{
+    font-weight: bold;
+  }
+`;
+
+const Main = styled.div`
+  max-width: 40vw;
+  padding: 20px;
+  margin: 0 auto;
+  @media (max-width: 999px) {
+    max-width: 60vw;
+  }
+  @media (max-width: 600px) {
+    max-width: 80vw;
+  }
+`;
+
+const Form = styled.form`
+  margin-top: 20px;
+`;
+
+const FormInput = styled.div`
+  margin-bottom: 15px;
+`;
+
+const Input = styled.input`
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid gray;
+  margin-bottom: 10px;
+  outline: none;
+
+  &:focus {
+    outline: none;
+    border: 1px solid dodgerblue; /* Change border color on focus */
+  }
+`;
+
+const Button = styled.button`
+  background-color: blue;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: darkblue;
+  }
+`;
 
 export default Login;

@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import noteContext from '../context/notes/NoteContext';
 import AddNote from './AddNote';
 import NoteItem from './NoteItem';
+import styled from 'styled-components';
 
 const Notes = ({ showAlert }) => {
   const context = useContext(noteContext);
@@ -53,10 +54,11 @@ const Notes = ({ showAlert }) => {
   };
 
   return (
-    <>
+    <Container>
       {/* Component to add a note */}
-      <AddNote showAlert={showAlert} />
-
+      <Form>
+        <AddNote showAlert={showAlert} />
+      </Form>
       {/* Modal to updateNote */}
       {/* now to refer it we use useRef hook so that on triggering of updateNote function, we can show this modal, and when will updateNote func run??-> on clciking pencil button kep on noteItem */}
       <button
@@ -66,7 +68,7 @@ const Notes = ({ showAlert }) => {
         data-bs-toggle="modal"
         data-bs-target="#exampleModal"
       >
-        Launch demo modal
+        Display none
       </button>
       <div
         className="modal fade"
@@ -161,24 +163,77 @@ const Notes = ({ showAlert }) => {
       </div>
 
       {/* To show all the notes fetched by mapping over the notes array coming as a context */}
-      <div className="row my-3">
-        <h2>Your Notes</h2>
-        <div className="my-2 mx-2">
-          {notes.length === 0 && 'No Notes to Display'}
+      <AllNotes>
+        <span className="heading">Your Notes</span>
+        <div>{notes.length === 0 && 'No Notes to Display'}</div>
+        <div className="your_notes">
+          {notes.map((note, index) => {
+            return (
+              <NoteItem
+                key={note._id}
+                note={note}
+                updateNote={updateNote}
+                showAlert={showAlert}
+              />
+            );
+          })}
         </div>
-        {notes.map((note, index) => {
-          return (
-            <NoteItem
-              key={note._id}
-              note={note}
-              updateNote={updateNote}
-              showAlert={showAlert}
-            />
-          );
-        })}
-      </div>
-    </>
+      </AllNotes>
+    </Container>
   );
 };
+
+const Container = styled.div`
+  display: flex;
+  max-width: 80vw;
+  margin: 0 auto;
+  background-color: whitesmoke;
+  padding: 1rem;
+  gap: 2rem;
+
+  @media (max-width: 999px) {
+    flex-direction: column;
+  }
+`;
+const Form = styled.div`
+  width: 30%;
+  border-right: 1px solid gray;
+  @media (max-width: 999px) {
+    width: 100%;
+    border-right: 0;
+  }
+`;
+const AllNotes = styled.div`
+  width: 70%;
+  .heading {
+    font-size: 2rem;
+    font-weight: bold;
+    padding: 6px 9px;
+  }
+  .heading:hover {
+    background-color: lightskyblue;
+    padding: 5px 8px;
+    border: 1px solid blueviolet;
+    border-radius: 8px;
+  }
+  .your_notes {
+    margin-top: 1rem;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    /* grid-template-rows: auto; */
+
+    @media (max-width: 640px) {
+      grid-template-columns: 1fr 1fr;
+    }
+    @media (max-width: 415px) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 999px) {
+    width: 100%;
+  }
+`;
 
 export default Notes;

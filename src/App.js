@@ -28,7 +28,7 @@ function App() {
         <Router>
           <Navbar />
           {alert.type !== '' && <Alert alert={alert} />}
-          <div className="container">
+          <div >
             {/* use the same sytax given below bhot searching hogy iske chkkr me */}
             <Routes>
               <Route exact path="/" element={<Home showAlert={showAlert} />} />
