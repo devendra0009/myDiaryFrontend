@@ -11,10 +11,12 @@ const Signup = ({ showAlert }) => {
     password: '',
     cpassword: '',
   });
+  const [loading,setLoading]=useState(false);
   let history = useNavigate();
 
   const handleSubmit = async (e) => {
     // //  console.log(e,e.target,e.target[3],e.target[3].value);
+    setLoading(true)
     e.preventDefault();
     const { name, email, password } = credentials;
 
@@ -33,12 +35,15 @@ const Signup = ({ showAlert }) => {
       //  console.log(token);
       if (token.success) {
         localStorage.setItem('token', token.authToken);
+        setLoading(false)
         history('/');
         showAlert('success', 'SuccessFully Created Your Account!');
       } else {
+        setLoading(false)
         showAlert('success', 'Enter Valid Credentials');
       }
     } else {
+      setLoading(false)
       alert('Enter correct PassWord');
     }
   };
@@ -106,7 +111,7 @@ const Signup = ({ showAlert }) => {
               placeholder="Confirm Password"
             />
           </FormInput>
-          <Button type="submit">Submit</Button>
+          <Button type="submit">{loading?'Registering In...':'Register'}</Button>
         </Form>
       </Main>
     </Container>

@@ -2,13 +2,17 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
+const host = process.env.REACT_APP_BACKEND_URI;
+
 const Login = ({ showAlert }) => {
   const [credentials, setCredentials] = useState({ email: '', password: '' });
+  const [loading,setLoading]=useState(false);
   let history = useNavigate();
 
   const handleSubmit = async (e) => {
+    setLoading(true);
     e.preventDefault();
-    const response = await fetch('http://localhost:5000/api/auth/login', {
+    const response = await fetch(`${host}/api/auth/login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -25,8 +29,10 @@ const Login = ({ showAlert }) => {
       //saving token in localStorage so that it can be used to authenticate users and their notes
       localStorage.setItem('token', token.authToken);
       showAlert('success', 'SuccessFully Signed In!');
+      setLoading(false);
       history('/');
     } else {
+      setLoading(false);
       showAlert('danger', 'Please Enter Valid Credentials!');
     }
   };
@@ -64,7 +70,7 @@ const Login = ({ showAlert }) => {
               onChange={onChange}
             />
           </FormInput>
-          <Button type="submit">Submit</Button>
+          <Button type="submit">{loading?'Logging In...':'Login'}</Button>
         </Form>
       </Main>
     </Container>
@@ -73,7 +79,7 @@ const Login = ({ showAlert }) => {
 
 const Container = styled.div`
   background-color: whitesmoke;
-  .heading{
+  .heading {
     font-weight: bold;
   }
 `;
